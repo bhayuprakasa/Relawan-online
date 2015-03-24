@@ -31,20 +31,17 @@ function MM_swapImage() { //v3.0
 <body onload="MM_preloadImages('Gambar/Home 1.png','Gambar/Event Gallery 1.png','Gambar/Event 1.png')">
 <table width="100%" border="0">
   <tr>
-    <td align="right">Hi, Username! <a href="<?php echo $logoutAction ?>"><img src="Gambar/Log Out.png" alt="" width="165" height="32" id="Log Out" /></a></td>
+    <td height="148" align="right"><img src="Gambar/Logo.png" alt="" width="606" height="69" /></td>
   </tr>
   <tr>
-    <td height="148" align="right"><img src="Gambar/Logo.png" alt="v" width="606" height="69" /></td>
-  </tr>
-  <tr>
-    <td align="center"><a href="Homepage Login.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Home','','Gambar/Home 1.png',1)"><img src="Gambar/Home.png" alt="v" width="186" height="75" id="Home" /></a><a href="Event Gallery Login.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Event Gal','','Gambar/Event Gallery 1.png',1)"><img src="Gambar/Event Gallery.png" alt="v" width="301" height="75" id="Event Gal" /></a><a href="Event Login.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Event','','Gambar/Event 1.png',1)"><img src="Gambar/Event.png" alt="v" width="168" height="75" id="Event" /></a></td>
+    <td align="center"><p><a href="Index.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Home','','Gambar/Home 1.png',1)"><img src="Gambar/Home.png" alt="c" width="186" height="75" id="Home" /></a><a href="Event Gallery.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Event Gal','','Gambar/Event Gallery 1.png',1)"><img src="Gambar/Event Gallery.png" alt="c" width="301" height="75" id="Event Gal" /></a><a href="Event.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Event','','Gambar/Event 1.png',1)"><img src="Gambar/Event.png" alt="c" width="168" height="75" id="Event" /></a></p>
+      <table width="100%" height="164" border="0">
+        <tr>
+          <th scope="row">You are not Loged in. Please Login <a href="Login.php">here</a>.</th>
+        </tr>
+      </table>
+    <p>&nbsp;</p></td>
   </tr>
 </table>
-<table width="100%" border="0">
-  <tr>
-    <th height="102" scope="row">Welcome to join Us!</th>
-  </tr>
-</table>
-<p>&nbsp;</p>
 </body>
 </html>

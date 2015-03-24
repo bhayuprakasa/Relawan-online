@@ -30,43 +30,55 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
   return $theValue;
 }
 }
-
-$editFormAction = $_SERVER['PHP_SELF'];
-if (isset($_SERVER['QUERY_STRING'])) {
-  $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
+?>
+<?php
+// *** Validate request to login to this site.
+if (!isset($_SESSION)) {
+  session_start();
 }
 
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO `sign up` (`First Name`, `Last Name`, Username, Email, Password, `Confirm Password`) VALUES (%s, %s, %s, %s, %s, %s)",
-                       GetSQLValueString($_POST['First_Name'], "text"),
-                       GetSQLValueString($_POST['Last_Name'], "text"),
-                       GetSQLValueString($_POST['Username'], "text"),
-                       GetSQLValueString($_POST['Email'], "text"),
-                       GetSQLValueString($_POST['Password'], "text"),
-                       GetSQLValueString($_POST['Confirm_Password'], "text"));
+$loginFormAction = $_SERVER['PHP_SELF'];
+if (isset($_GET['accesscheck'])) {
+  $_SESSION['PrevUrl'] = $_GET['accesscheck'];
+}
 
+if (isset($_POST['Username'])) {
+  $loginUsername=$_POST['Username'];
+  $password=$_POST['Password'];
+  $MM_fldUserAuthorization = "";
+  $MM_redirectLoginSuccess = "Homepage Login.php";
+  $MM_redirectLoginFailed = "Gagal login.php";
+  $MM_redirecttoReferrer = false;
   mysql_select_db($database_Sign_Up, $Sign_Up);
-  $Result1 = mysql_query($insertSQL, $Sign_Up) or die(mysql_error());
+  
+  $LoginRS__query=sprintf("SELECT Username, Password FROM `sign up` WHERE Username=%s AND Password=%s",
+    GetSQLValueString($loginUsername, "text"), GetSQLValueString($password, "text")); 
+   
+  $LoginRS = mysql_query($LoginRS__query, $Sign_Up) or die(mysql_error());
+  $loginFoundUser = mysql_num_rows($LoginRS);
+  if ($loginFoundUser) {
+     $loginStrGroup = "";
+    
+	if (PHP_VERSION >= 5.1) {session_regenerate_id(true);} else {session_regenerate_id();}
+    //declare two session variables and assign them
+    $_SESSION['MM_Username'] = $loginUsername;
+    $_SESSION['MM_UserGroup'] = $loginStrGroup;	      
 
-  $insertGoTo = "Sukses Sign Up.php";
-  if (isset($_SERVER['QUERY_STRING'])) {
-    $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
-    $insertGoTo .= $_SERVER['QUERY_STRING'];
+    if (isset($_SESSION['PrevUrl']) && false) {
+      $MM_redirectLoginSuccess = $_SESSION['PrevUrl'];	
+    }
+    header("Location: " . $MM_redirectLoginSuccess );
   }
-  header(sprintf("Location: %s", $insertGoTo));
+  else {
+    header("Location: ". $MM_redirectLoginFailed );
+  }
 }
-
-mysql_select_db($database_Sign_Up, $Sign_Up);
-$query_Recordset1 = "SELECT * FROM `sign up`";
-$Recordset1 = mysql_query($query_Recordset1, $Sign_Up) or die(mysql_error());
-$row_Recordset1 = mysql_fetch_assoc($Recordset1);
-$totalRows_Recordset1 = mysql_num_rows($Recordset1);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Untitled Document</title>
+<title>Login</title>
 <script type="text/javascript">
 function MM_swapImgRestore() { //v3.0
   var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
@@ -101,44 +113,28 @@ function MM_swapImage() { //v3.0
     <td align="center"><a href="Index.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Home','','Gambar/Home 1.png',1)"><img src="Gambar/Home.png" alt="c" width="186" height="75" id="Home" /></a><a href="Event Gallery.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Event Gal','','Gambar/Event Gallery 1.png',1)"><img src="Gambar/Event Gallery.png" alt="c" width="301" height="75" id="Event Gal" /></a><a href="Event.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Event','','Gambar/Event 1.png',1)"><img src="Gambar/Event.png" alt="c" width="168" height="75" id="Event" /></a></td>
   </tr>
 </table>
-<p>&nbsp;</p>
-<form action="<?php echo $editFormAction; ?>" method="post" name="form1" id="form1">
-  <table width="438" height="319" align="center">
-    <tr valign="baseline">
-      <td width="126" align="right" nowrap="nowrap"><b>First Name:</b></td>
-      <td width="225"><input type="text" name="First_Name" value="" size="32" /></td>
-    </tr>
-    <tr valign="baseline">
-      <td nowrap="nowrap" align="right"><b>Last Name:</b></td>
-      <td><input type="text" name="Last_Name" value="" size="32" /></td>
-    </tr>
-    <tr valign="baseline">
-      <td nowrap="nowrap" align="right"><b>Username:</b></td>
-      <td><input type="text" name="Username" value="" size="32" /></td>
-    </tr>
-    <tr valign="baseline">
-      <td nowrap="nowrap" align="right"><b>Email:</b></td>
-      <td><input type="text" name="Email" value="" size="32" /></td>
-    </tr>
-    <tr valign="baseline">
-      <td nowrap="nowrap" align="right"><b>Password:</b></td>
-      <td><input type="password" name="Password" value="" size="32" /></td>
-    </tr>
-    <tr valign="baseline">
-      <td nowrap="nowrap" align="right"><b>Confirm Password:</b></td>
-      <td><input type="password" name="Confirm_Password" value="" size="32" /></td>
-    </tr>
-    <tr valign="baseline">
-      <td nowrap="nowrap" align="right">&nbsp;</td>
-      <td><input type="submit" value="Sign Up" />
-      <input type="reset" name="Reset" id="Reset" value="Reset" /></td>
-    </tr>
-  </table>
-  <input type="hidden" name="MM_insert" value="form1" />
+<div class="clear">
+<form ACTION="<?php echo $loginFormAction; ?>" class="Login-Relawan-Online" method="POST" name="membuat-login">
+<div class="column">
+  <p>
+  <label for="Username"><b>Username :</b></label>
+  </p>
+  <p>
+    <input type="Text" name="Username"/>
+  </p>
+</div>
+
+<div class="column">
+  <p>
+  <label for="Username"><b>Password :</b></label>
+  </p>
+  <p>
+    <input type="Password" name="Password"/>
+  </p>
+</div>
+
+<button type="submit" >LOGIN</button>
 </form>
 <p>&nbsp;</p>
 </body>
 </html>
-<?php
-mysql_free_result($Recordset1);
-?>
