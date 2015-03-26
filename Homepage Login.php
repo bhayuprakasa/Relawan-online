@@ -109,6 +109,18 @@ $query_Username = "SELECT * FROM `sign up`";
 $Username = mysql_query($query_Username, $Sign_Up) or die(mysql_error());
 $row_Username = mysql_fetch_assoc($Username);
 $totalRows_Username = mysql_num_rows($Username);
+
+mysql_select_db($database_Sign_Up, $Sign_Up);
+$query_Profile = "SELECT * FROM profile";
+$Profile = mysql_query($query_Profile, $Sign_Up) or die(mysql_error());
+$row_Profile = mysql_fetch_assoc($Profile);
+$totalRows_Profile = mysql_num_rows($Profile);
+
+mysql_select_db($database_Sign_Up, $Sign_Up);
+$query_Event = "SELECT * FROM event";
+$Event = mysql_query($query_Event, $Sign_Up) or die(mysql_error());
+$row_Event = mysql_fetch_assoc($Event);
+$totalRows_Event = mysql_num_rows($Event);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -152,25 +164,33 @@ function MM_swapImage() { //v3.0
     <td align="center"><a href="Homepage Login.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Home','','Gambar/Home 1.png',1)"><img src="Gambar/Home.png" alt="v" width="186" height="75" id="Home" /></a><a href="Event Gallery Login.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Event Gal','','Gambar/Event Gallery 1.png',1)"><img src="Gambar/Event Gallery.png" alt="v" width="301" height="75" id="Event Gal" /></a><a href="Event Login.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Event','','Gambar/Event 1.png',1)"><img src="Gambar/Event.png" alt="v" width="168" height="75" id="Event" /></a></td>
   </tr>
 </table>
-<table width="100%" border="0">
+<table width="132%" border="0">
   <tr>
-    <th height="82" scope="col">Event Terbaru</th>
+    <th width="61%" height="82" scope="col">Event Terbaru</th>
+    <th width="39%" align="left" scope="col"><p>About Me</p>
+    <p><?php echo $row_Profile['Profpict']; ?></p></th>
   </tr>
 </table>
-<table width="100%" border="0">
+<table width="131%" border="0">
   <tr>
-    <th height="75" scope="col">Lingkungan</th>
-    <th scope="col">Pendidikan</th>
+    <th width="31%" height="75" scope="col">Lingkungan</th>
+    <th width="30%" scope="col">Pendidikan</th>
+    <th width="39%" align="left" valign="middle" scope="col"><p>Point</p>
+      <p><?php echo $row_Profile['Full name']; ?></p>
+    <p><?php echo $row_Profile['Gender']; ?>.<?php echo $row_Profile['Age']; ?></p></th>
   </tr>
   <tr>
     <td align="center" valign="middle">Foto</td>
     <td align="center" valign="middle">Foto</td>
+    <td align="left" valign="middle"><p><?php echo $row_Profile['City']; ?>,<?php echo $row_Profile['Country']; ?></p>
+    <p><?php echo $row_Profile['Website']; ?></p></td>
   </tr>
 </table>
-<table width="100%" border="0">
+<table width="131%" border="0">
   <tr>
-    <td width="51%" align="center" scope="col">Deskripsi</td>
-    <td width="49%" align="center" scope="col">Deskripsi</td>
+    <td width="31%" align="center" scope="col"><?php echo $row_Event['Description']; ?></td>
+    <td width="30%" align="center" scope="col"><?php echo $row_Event['Description']; ?></td>
+    <td width="39%" align="left" scope="col"><a href="Edit Profile.php"><img src="Gambar/Edit Profile.png" width="103" height="25" /></a></td>
   </tr>
 </table>
 <p>&nbsp;</p>
@@ -180,4 +200,8 @@ function MM_swapImage() { //v3.0
 </html>
 <?php
 mysql_free_result($Username);
+
+mysql_free_result($Profile);
+
+mysql_free_result($Event);
 ?>

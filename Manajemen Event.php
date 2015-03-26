@@ -1,3 +1,48 @@
+<?php require_once('Connections/Sign_Up.php'); ?>
+<?php
+if (!function_exists("GetSQLValueString")) {
+function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
+{
+  if (PHP_VERSION < 6) {
+    $theValue = get_magic_quotes_gpc() ? stripslashes($theValue) : $theValue;
+  }
+
+  $theValue = function_exists("mysql_real_escape_string") ? mysql_real_escape_string($theValue) : mysql_escape_string($theValue);
+
+  switch ($theType) {
+    case "text":
+      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+      break;    
+    case "long":
+    case "int":
+      $theValue = ($theValue != "") ? intval($theValue) : "NULL";
+      break;
+    case "double":
+      $theValue = ($theValue != "") ? doubleval($theValue) : "NULL";
+      break;
+    case "date":
+      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+      break;
+    case "defined":
+      $theValue = ($theValue != "") ? $theDefinedValue : $theNotDefinedValue;
+      break;
+  }
+  return $theValue;
+}
+}
+
+mysql_select_db($database_Sign_Up, $Sign_Up);
+$query_Recordset1 = "SELECT * FROM event";
+$Recordset1 = mysql_query($query_Recordset1, $Sign_Up) or die(mysql_error());
+$row_Recordset1 = mysql_fetch_assoc($Recordset1);
+$totalRows_Recordset1 = mysql_num_rows($Recordset1);
+
+mysql_select_db($database_Sign_Up, $Sign_Up);
+$query_Recordset2 = "SELECT * FROM `sign up`";
+$Recordset2 = mysql_query($query_Recordset2, $Sign_Up) or die(mysql_error());
+$row_Recordset2 = mysql_fetch_assoc($Recordset2);
+$totalRows_Recordset2 = mysql_num_rows($Recordset2);
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -40,10 +85,10 @@ function MM_swapImage() { //v3.0
       <tr>
         <td width="19" height="128" align="center" valign="middle"><table width="100%" border="0">
           <tr>
-            <td align="right">Hi, Username! <a href="Index.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Log Out','','Gambar/Log Out 1.png',1)"><img src="Gambar/Log Out.png" alt="c" width="165" height="32" id="Log Out2" /></a></td>
+            <td align="right">Hi, <?php echo $row_Recordset2['Username']; ?>! <a href="Index.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Log Out','','Gambar/Log Out 1.png',1)"><img src="Gambar/Log Out.png" alt="c" width="165" height="32" id="Log Out2" /></a></td>
           </tr>
           <tr>
-            <td height="148" align="right"><img src="Gambar/Logo.png" alt="v" width="606" height="69" /></td>
+            <td height="148" align="right"><img src="<?php echo $row_Recordset2['Username']; ?>" alt="v" /></td>
           </tr>
           <tr>
             <td align="center"><a href="Homepage Login.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Home','','Gambar/Home 1.png',1)"><img src="Gambar/Home.png" alt="v" width="186" height="75" id="Home" /></a><a href="Event Gallery Login.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Event Gal','','Gambar/Event Gallery 1.png',1)"><img src="Gambar/Event Gallery.png" alt="v" width="301" height="75" id="Event Gal" /></a><a href="Event Login.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Event','','Gambar/Event 1.png',1)"><img src="Gambar/Event.png" alt="v" width="168" height="75" id="Event" /></a></td>
@@ -55,13 +100,13 @@ function MM_swapImage() { //v3.0
 </table>
 <table width="100%" border="0">
   <tr>
-    <th scope="col">Title</th>
+    <th scope="col"><?php echo $row_Recordset1['Title']; ?></th>
   </tr>
   <tr>
     <td align="center">Gambar</td>
   </tr>
   <tr>
-    <td height="140" align="center">Deskripsi</td>
+    <td height="140" align="center"><?php echo $row_Recordset1['Description']; ?></td>
   </tr>
 </table>
 <table width="80%" border="1">
@@ -73,6 +118,10 @@ function MM_swapImage() { //v3.0
 <p>&nbsp;</p>
 </body>
 </html>
+<?php
+mysql_free_result($Recordset1);
 
+mysql_free_result($Recordset2);
+?>
 </body>
 </html>

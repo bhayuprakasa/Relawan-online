@@ -1,3 +1,42 @@
+<?php require_once('Connections/Sign_Up.php'); ?>
+<?php
+if (!function_exists("GetSQLValueString")) {
+function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
+{
+  if (PHP_VERSION < 6) {
+    $theValue = get_magic_quotes_gpc() ? stripslashes($theValue) : $theValue;
+  }
+
+  $theValue = function_exists("mysql_real_escape_string") ? mysql_real_escape_string($theValue) : mysql_escape_string($theValue);
+
+  switch ($theType) {
+    case "text":
+      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+      break;    
+    case "long":
+    case "int":
+      $theValue = ($theValue != "") ? intval($theValue) : "NULL";
+      break;
+    case "double":
+      $theValue = ($theValue != "") ? doubleval($theValue) : "NULL";
+      break;
+    case "date":
+      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+      break;
+    case "defined":
+      $theValue = ($theValue != "") ? $theDefinedValue : $theNotDefinedValue;
+      break;
+  }
+  return $theValue;
+}
+}
+
+mysql_select_db($database_Sign_Up, $Sign_Up);
+$query_Recordset1 = "SELECT * FROM event";
+$Recordset1 = mysql_query($query_Recordset1, $Sign_Up) or die(mysql_error());
+$row_Recordset1 = mysql_fetch_assoc($Recordset1);
+$totalRows_Recordset1 = mysql_num_rows($Recordset1);
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -61,31 +100,34 @@ function MM_swapImage() { //v3.0
 </table>
 <table width="100%" height="204" border="0">
   <tr>
-    <th width="53%" scope="col">Title</th>
-    <th width="47%" align="center" scope="col">Title</th>
+    <th width="53%" scope="col"><?php echo $row_Recordset1['Title']; ?></th>
+    <th width="47%" align="center" scope="col"><?php echo $row_Recordset1['Title']; ?></th>
   </tr>
   <tr>
     <td align="center">Gambar</td>
     <td align="center">Gambar</td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
+    <td align="center"><?php echo $row_Recordset1['Description']; ?></td>
+    <td align="center"><?php echo $row_Recordset1['Description']; ?></td>
   </tr>
 </table>
 <table width="92%" border="0">
   <tr>
-    <th width="45%" align="right" scope="col"><a href="Event Lengkap.php"><img src="../../../Users/bhayu/Pictures/Read More.png" width="102" height="27" /></a></th>
-    <th width="55%" align="right" scope="col"><a href="Event Lengkap.php"><img src="../../../Users/bhayu/Pictures/Read More.png" width="102" height="27" /></a></th>
+    <th width="45%" align="right" scope="col"><a href="Event Lengkap.php"><img src="Gambar/Read More.png" width="102" height="27" /></a></th>
+    <th width="55%" align="right" scope="col"><a href="Event Lengkap.php"><img src="Gambar/Read More.png" alt="" width="102" height="27" /></a></th>
   </tr>
 </table>
 <table width="100%" border="1">
   <tr>
-    <th align="right" scope="col"><a href="Create Event.php"><img src="../../../Users/bhayu/Pictures/Create Event.png" width="102" height="27" /></a></th>
+    <th align="right" scope="col"><a href="Create Event.php"><img src="Gambar/Create Event.png" width="102" height="27" /></a></th>
   </tr>
 </table>
 </body>
 </html>
+<?php
+mysql_free_result($Recordset1);
+?>
 <body>
 </body>
 </html>

@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="UD_Profile" value="name:Profpict;datatype:string,name:Full name;datatype:string,name:Gender;datatype:string,name:Age;datatype:int,name:City;datatype:string,name:Country;datatype:string,name:Website;datatype:string" />
+</info>

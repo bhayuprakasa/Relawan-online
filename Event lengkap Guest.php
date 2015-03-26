@@ -29,6 +29,7 @@ function MM_swapImage() { //v3.0
 </head>
 
 <body onload="MM_preloadImages('Gambar/Login 1.png','Gambar/Home 1.png','Gambar/Event Gallery 1.png','Gambar/Event 1.png','Gambar/Sign Up 1.png')">
+<p>&nbsp;</p>
 <table width="100%" border="0">
   <tr>
     <td align="right">Welcome!<a href="Login.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Login','','Gambar/Login 1.png',1)"> <img src="Gambar/Login.png" alt="" width="100" height="32" id="Login" /></a><a href="#" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Sugn Up','','Gambar/Sign Up 1.png',1)"> <img src="Gambar/Sign Up.png" alt="" width="116" height="32" id="Sugn Up" /></a></td>

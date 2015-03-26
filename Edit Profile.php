@@ -1,3 +1,67 @@
+<?php require_once('Connections/Sign_Up.php'); ?>
+<?php
+if (!function_exists("GetSQLValueString")) {
+function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
+{
+  if (PHP_VERSION < 6) {
+    $theValue = get_magic_quotes_gpc() ? stripslashes($theValue) : $theValue;
+  }
+
+  $theValue = function_exists("mysql_real_escape_string") ? mysql_real_escape_string($theValue) : mysql_escape_string($theValue);
+
+  switch ($theType) {
+    case "text":
+      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+      break;    
+    case "long":
+    case "int":
+      $theValue = ($theValue != "") ? intval($theValue) : "NULL";
+      break;
+    case "double":
+      $theValue = ($theValue != "") ? doubleval($theValue) : "NULL";
+      break;
+    case "date":
+      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+      break;
+    case "defined":
+      $theValue = ($theValue != "") ? $theDefinedValue : $theNotDefinedValue;
+      break;
+  }
+  return $theValue;
+}
+}
+
+$editFormAction = $_SERVER['PHP_SELF'];
+if (isset($_SERVER['QUERY_STRING'])) {
+  $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
+}
+
+if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form2")) {
+  $insertSQL = sprintf("INSERT INTO profile (`Full name`, Gender, Age, City, Country, Website) VALUES (%s, %s, %s, %s, %s, %s)",
+                       GetSQLValueString($_POST['Full_name'], "text"),
+                       GetSQLValueString($_POST['Gender'], "text"),
+                       GetSQLValueString($_POST['Age'], "int"),
+                       GetSQLValueString($_POST['City'], "text"),
+                       GetSQLValueString($_POST['Country'], "text"),
+                       GetSQLValueString($_POST['Website'], "text"));
+
+  mysql_select_db($database_Sign_Up, $Sign_Up);
+  $Result1 = mysql_query($insertSQL, $Sign_Up) or die(mysql_error());
+
+  $insertGoTo = "Sukses Edit Profile.php";
+  if (isset($_SERVER['QUERY_STRING'])) {
+    $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
+    $insertGoTo .= $_SERVER['QUERY_STRING'];
+  }
+  header(sprintf("Location: %s", $insertGoTo));
+}
+
+mysql_select_db($database_Sign_Up, $Sign_Up);
+$query_Profile = "SELECT * FROM profile";
+$Profile = mysql_query($query_Profile, $Sign_Up) or die(mysql_error());
+$row_Profile = mysql_fetch_assoc($Profile);
+$totalRows_Profile = mysql_num_rows($Profile);
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -40,66 +104,59 @@ function MM_swapImage() { //v3.0
     <td align="center"><a href="Homepage Login.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Home','','Gambar/Home 1.png',1)"><img src="Gambar/Home.png" alt="v" width="186" height="75" id="Home" /></a><a href="Event Gallery Login.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Event Gal','','Gambar/Event Gallery 1.png',1)"><img src="Gambar/Event Gallery.png" alt="v" width="301" height="75" id="Event Gal" /></a><a href="Event Login.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Event','','Gambar/Event 1.png',1)"><img src="Gambar/Event.png" alt="v" width="168" height="75" id="Event" /></a></td>
   </tr>
 </table>
-<table width="25%" border="0">
+<table width="100%" border="0">
   <tr>
     <th scope="col">ABOUT ME</th>
   </tr>
   <tr>
-    <td align="center">Gambar</td>
+    <td align="center"><?php echo $row_Profile['Profpict']; ?></td>
   </tr>
   <tr>
     <td align="center"><a href="#">Change Profile Picture</a></td>
   </tr>
 </table>
 <p>&nbsp;</p>
-<form id="form1" name="form1" method="post" action="">
-  <p>
-    <label>Full Name : 
-      <input type="text" name="Full Name" id="Full Name" />
-    </label>
-  </p>
-  <p>
-    <label>
-      Gender : 
-      <input type="radio" name="Gender" value="Male" id="Gender_0" />
-Male</label>
-    <label>
-      <input type="radio" name="Gender" value="Female" id="Gender_1" />
-    Female</label>
-  </p>
-  <p>
-    <label>Age
-      :      	
-      <input name="Age" type="text" id="Age" value="" />
-    </label>
-  </p>
-  <p>
-    <label>City :
-      <input type="text" name="City" id="City" />
-    </label>
-  </p>
-  <p>
-    <label>Country     :     
-      <input type="text" name="Country" id="Country" />
-    </label>
-  </p>
-  <p>
-    <label>Website :
-      <input type="text" name="Website" id="Website" />
-    </label>
-    <br />
-  </p>
+<form action="<?php echo $editFormAction; ?>" method="post" name="form2" id="form2">
+<table align="center">
+    <tr valign="baseline">
+      <td nowrap="nowrap" align="right">Full name:</td>
+      <td><input type="text" name="Full_name" value="<?php echo $row_Profile['Full name']; ?>" size="32" /></td>
+    </tr>
+    <tr valign="baseline">
+      <td nowrap="nowrap" align="right">Gender:</td>
+      <td><input type="text" name="Gender" value="<?php echo $row_Profile['Gender']; ?>" size="32" /></td>
+    </tr>
+    <tr valign="baseline">
+      <td nowrap="nowrap" align="right">Age:</td>
+      <td><input type="text" name="Age" value="<?php echo $row_Profile['Age']; ?>" size="32" /></td>
+    </tr>
+    <tr valign="baseline">
+      <td nowrap="nowrap" align="right">City:</td>
+      <td><input type="text" name="City" value="<?php echo $row_Profile['City']; ?>" size="32" /></td>
+    </tr>
+    <tr valign="baseline">
+      <td nowrap="nowrap" align="right">Country:</td>
+      <td><input type="text" name="Country" value="<?php echo $row_Profile['Country']; ?>" size="32" /></td>
+    </tr>
+    <tr valign="baseline">
+      <td nowrap="nowrap" align="right">Website:</td>
+      <td><input type="text" name="Website" value="<?php echo $row_Profile['Website']; ?>" size="32" /></td>
+    </tr>
+    <tr valign="baseline">
+      <td nowrap="nowrap" align="right">&nbsp;</td>
+      <td><input type="submit" value="Edit Profile" /></td>
+    </tr>
+  </table>
+  <input type="hidden" name="MM_insert" value="form2" />
 </form>
-<table width="26%" height="94" border="0">
-  <tr>
-    <th align="right" scope="col"><a href="Sukses Edit Profile.php"><img src="Gambar/Edit Profile.png" width="78" height="27" /></a></th>
-  </tr>
-</table>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 </body>
 </html>
-
+<?php
+mysql_free_result($Profile);
+?>
 </body>
 </html>
