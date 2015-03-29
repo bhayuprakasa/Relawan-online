@@ -56,11 +56,37 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form2")) {
   header(sprintf("Location: %s", $insertGoTo));
 }
 
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form2")) {
+  $updateSQL = sprintf("UPDATE profile SET Gender=%s, Age=%s, City=%s, Country=%s, Website=%s WHERE `Full name`=%s",
+                       GetSQLValueString($_POST['Gender'], "text"),
+                       GetSQLValueString($_POST['Age'], "int"),
+                       GetSQLValueString($_POST['City'], "text"),
+                       GetSQLValueString($_POST['Country'], "text"),
+                       GetSQLValueString($_POST['Website'], "text"),
+                       GetSQLValueString($_POST['Full_name'], "text"));
+
+  mysql_select_db($database_Sign_Up, $Sign_Up);
+  $Result1 = mysql_query($updateSQL, $Sign_Up) or die(mysql_error());
+
+  $updateGoTo = "Sukses Edit Profile.php";
+  if (isset($_SERVER['QUERY_STRING'])) {
+    $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
+    $updateGoTo .= $_SERVER['QUERY_STRING'];
+  }
+  header(sprintf("Location: %s", $updateGoTo));
+}
+
 mysql_select_db($database_Sign_Up, $Sign_Up);
 $query_Profile = "SELECT * FROM profile";
 $Profile = mysql_query($query_Profile, $Sign_Up) or die(mysql_error());
 $row_Profile = mysql_fetch_assoc($Profile);
 $totalRows_Profile = mysql_num_rows($Profile);
+
+mysql_select_db($database_Sign_Up, $Sign_Up);
+$query_Recordset1 = "SELECT * FROM `sign up`";
+$Recordset1 = mysql_query($query_Recordset1, $Sign_Up) or die(mysql_error());
+$row_Recordset1 = mysql_fetch_assoc($Recordset1);
+$totalRows_Recordset1 = mysql_num_rows($Recordset1);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -95,16 +121,28 @@ function MM_swapImage() { //v3.0
 <body onload="MM_preloadImages('Gambar/Home 1.png','Gambar/Event Gallery 1.png','Gambar/Event 1.png','Gambar/Log Out 1.png')">
 <table width="100%" border="0">
   <tr>
-    <td align="right">Hi, Username! <a href="#" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Log Out','','Gambar/Log Out 1.png',1)"><img src="Gambar/Log Out.png" alt="" width="165" height="32" id="Log Out" /></a></td>
+    <td align="right">Hi, <?php echo $row_Recordset1['Username']; ?>! <a href="#" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Log Out','','Gambar/Log Out 1.png',1)"><img src="Gambar/Log Out.png" alt="" width="165" height="32" id="Log Out" /></a></td>
   </tr>
   <tr>
     <td height="148" align="right"><img src="Gambar/Logo.png" alt="v" width="606" height="69" /></td>
   </tr>
   <tr>
-    <td align="center"><a href="Homepage Login.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Home','','Gambar/Home 1.png',1)"><img src="Gambar/Home.png" alt="v" width="186" height="75" id="Home" /></a><a href="Event Gallery Login.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Event Gal','','Gambar/Event Gallery 1.png',1)"><img src="Gambar/Event Gallery.png" alt="v" width="301" height="75" id="Event Gal" /></a><a href="Event Login.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Event','','Gambar/Event 1.png',1)"><img src="Gambar/Event.png" alt="v" width="168" height="75" id="Event" /></a></td>
+    <td align="center"><a href="Homepage Login.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Home','','Gambar/Home 1.png',1)"><img src="Gambar/Home.png" alt="v" width="186" height="75" id="Home" /></a><a href="Event Gallery Login.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Event Gal','','Gambar/Event Gallery 1.png',1)"><img src="Gambar/Event Gallery.png" alt="v" width="301" height="75" id="Event Gal" /></a><a href="Display.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Event','','Gambar/Event 1.png',1)"><img src="Gambar/Event.png" alt="v" width="168" height="75" id="Event" /></a></td>
   </tr>
 </table>
 <table width="100%" border="0">
+  <tr>
+    <th scope="col">&nbsp;</th>
+  </tr>
+  <tr>
+    <td align="center">&nbsp;</td>
+  </tr>
+  <tr>
+    <td align="center">&nbsp;</td>
+  </tr>
+</table>
+<form action="<?php echo $editFormAction; ?>" method="POST" name="form2" id="form2">
+  <table width="100%" border="0">
   <tr>
     <th scope="col">ABOUT ME</th>
   </tr>
@@ -112,35 +150,34 @@ function MM_swapImage() { //v3.0
     <td align="center"><?php echo $row_Profile['Profpict']; ?></td>
   </tr>
   <tr>
-    <td align="center"><a href="#">Change Profile Picture</a></td>
+    <td align="center"><a href="">Change Profile Picture</a></td>
   </tr>
 </table>
 <p>&nbsp;</p>
-<form action="<?php echo $editFormAction; ?>" method="post" name="form2" id="form2">
 <table align="center">
     <tr valign="baseline">
       <td nowrap="nowrap" align="right">Full name:</td>
-      <td><input type="text" name="Full_name" value="<?php echo $row_Profile['Full name']; ?>" size="32" /></td>
+      <td><input type="text" name="Full_name" size="32" /></td>
     </tr>
     <tr valign="baseline">
       <td nowrap="nowrap" align="right">Gender:</td>
-      <td><input type="text" name="Gender" value="<?php echo $row_Profile['Gender']; ?>" size="32" /></td>
+      <td><input type="text" name="Gender" size="32" /></td>
     </tr>
     <tr valign="baseline">
       <td nowrap="nowrap" align="right">Age:</td>
-      <td><input type="text" name="Age" value="<?php echo $row_Profile['Age']; ?>" size="32" /></td>
+      <td><input type="text" name="Age" size="32" /></td>
     </tr>
     <tr valign="baseline">
       <td nowrap="nowrap" align="right">City:</td>
-      <td><input type="text" name="City" value="<?php echo $row_Profile['City']; ?>" size="32" /></td>
+      <td><input type="text" name="City" size="32" /></td>
     </tr>
     <tr valign="baseline">
       <td nowrap="nowrap" align="right">Country:</td>
-      <td><input type="text" name="Country" value="<?php echo $row_Profile['Country']; ?>" size="32" /></td>
+      <td><input type="text" name="Country" size="32" /></td>
     </tr>
     <tr valign="baseline">
       <td nowrap="nowrap" align="right">Website:</td>
-      <td><input type="text" name="Website" value="<?php echo $row_Profile['Website']; ?>" size="32" /></td>
+      <td><input type="text" name="Website" size="32" /></td>
     </tr>
     <tr valign="baseline">
       <td nowrap="nowrap" align="right">&nbsp;</td>
@@ -148,6 +185,7 @@ function MM_swapImage() { //v3.0
     </tr>
   </table>
   <input type="hidden" name="MM_insert" value="form2" />
+  <input type="hidden" name="MM_update" value="form2" />
 </form>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
@@ -157,6 +195,8 @@ function MM_swapImage() { //v3.0
 </html>
 <?php
 mysql_free_result($Profile);
+
+mysql_free_result($Recordset1);
 ?>
 </body>
 </html>

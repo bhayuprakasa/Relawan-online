@@ -1,3 +1,57 @@
+<?php require_once('Connections/Sign_Up.php'); ?>
+<?php
+if (!function_exists("GetSQLValueString")) {
+function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
+{
+  if (PHP_VERSION < 6) {
+    $theValue = get_magic_quotes_gpc() ? stripslashes($theValue) : $theValue;
+  }
+
+  $theValue = function_exists("mysql_real_escape_string") ? mysql_real_escape_string($theValue) : mysql_escape_string($theValue);
+
+  switch ($theType) {
+    case "text":
+      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+      break;    
+    case "long":
+    case "int":
+      $theValue = ($theValue != "") ? intval($theValue) : "NULL";
+      break;
+    case "double":
+      $theValue = ($theValue != "") ? doubleval($theValue) : "NULL";
+      break;
+    case "date":
+      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+      break;
+    case "defined":
+      $theValue = ($theValue != "") ? $theDefinedValue : $theNotDefinedValue;
+      break;
+  }
+  return $theValue;
+}
+}
+
+$maxRows_Recordset1 = 2;
+$pageNum_Recordset1 = 0;
+if (isset($_GET['pageNum_Recordset1'])) {
+  $pageNum_Recordset1 = $_GET['pageNum_Recordset1'];
+}
+$startRow_Recordset1 = $pageNum_Recordset1 * $maxRows_Recordset1;
+
+mysql_select_db($database_Sign_Up, $Sign_Up);
+$query_Recordset1 = "SELECT * FROM event";
+$query_limit_Recordset1 = sprintf("%s LIMIT %d, %d", $query_Recordset1, $startRow_Recordset1, $maxRows_Recordset1);
+$Recordset1 = mysql_query($query_limit_Recordset1, $Sign_Up) or die(mysql_error());
+$row_Recordset1 = mysql_fetch_assoc($Recordset1);
+
+if (isset($_GET['totalRows_Recordset1'])) {
+  $totalRows_Recordset1 = $_GET['totalRows_Recordset1'];
+} else {
+  $all_Recordset1 = mysql_query($query_Recordset1);
+  $totalRows_Recordset1 = mysql_num_rows($all_Recordset1);
+}
+$totalPages_Recordset1 = ceil($totalRows_Recordset1/$maxRows_Recordset1)-1;
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -39,7 +93,7 @@ function MM_swapImage() { //v3.0
         <td height="148" align="right"><img src="Gambar/Logo.png" alt="c" width="606" height="69" /></td>
       </tr>
       <tr>
-        <td align="center"><a href="Index.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Home','','Gambar/Home 1.png',1)"><img src="Gambar/Home.png" alt="c" width="186" height="75" id="Home" /></a><a href="Event Gallery.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Event Gal','','Gambar/Event Gallery 1.png',1)"><img src="Gambar/Event Gallery.png" alt="c" width="301" height="75" id="Event Gal" /></a><a href="Event.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Event','','Gambar/Event 1.png',1)"><img src="Gambar/Event.png" alt="c" width="168" height="75" id="Event" /></a></td>
+        <td align="center"><a href="Homepage Login.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Home','','Gambar/Home 1.png',1)"><img src="Gambar/Home.png" alt="v" width="186" height="75" id="Home" /></a><a href="Event Gallery Login.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Event Gal','','Gambar/Event Gallery 1.png',1)"><img src="Gambar/Event Gallery.png" alt="v" width="301" height="75" id="Event Gal" /></a><a href="Display Gues.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Event','','Gambar/Event 1.png',1)"><img src="Gambar/Event.png" alt="v" width="168" height="75" id="Event" /></a></td>
       </tr>
     </table></td>
   </tr>
@@ -54,21 +108,20 @@ function MM_swapImage() { //v3.0
     <td width="32%" align="center">Pendidikan</td>
     <td width="34%" align="center">Kesehatan</td>
   </tr>
-  <tr>
-    <td height="96" align="center">Gambar Gambar</td>
-    <td align="center">Gambar Gambar</td>
-    <td align="center">Gambar Gambar</td>
-  </tr>
-  <tr>
-    <td height="56" align="center">Gambar Gambar</td>
-    <td align="center">Gambar Gambar</td>
-    <td align="center">Gambar Gambar</td>
-  </tr>
+  <?php do { ?>
+    <tr>
+      <td height="96" align="center"><img src="" alt="" name="image" width="32" height="32" id="image" /><img src="" alt="" name="image" width="32" height="32" id="image4" /></td>
+      <td align="center"><img src="" alt="" name="image" width="32" height="32" id="image2" /> <img src="" alt="" name="image" width="32" height="32" id="image5" /></td>
+      <td align="center"><img src="" alt="" name="image" width="32" height="32" id="image3" /> <img src="" alt="" name="image" width="32" height="32" id="image6" /></td>
+    </tr>
+    <?php } while ($row_Recordset1 = mysql_fetch_assoc($Recordset1)); ?>
 </table>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 </body>
 </html>
-
+<?php
+mysql_free_result($Recordset1);
+?>
 </body>
 </html>

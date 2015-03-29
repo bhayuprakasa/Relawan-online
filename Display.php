@@ -1,4 +1,34 @@
 <?php require_once('Connections/Sign_Up.php'); ?>
+<?php require_once('Connections/Sign_Up.php'); ?>
+<?php require_once('Connections/Sign_Up.php'); ?>
+<?php
+//initialize the session
+if (!isset($_SESSION)) {
+  session_start();
+}
+
+// ** Logout the current user. **
+$logoutAction = $_SERVER['PHP_SELF']."?doLogout=true";
+if ((isset($_SERVER['QUERY_STRING'])) && ($_SERVER['QUERY_STRING'] != "")){
+  $logoutAction .="&". htmlentities($_SERVER['QUERY_STRING']);
+}
+
+if ((isset($_GET['doLogout'])) &&($_GET['doLogout']=="true")){
+  //to fully log out a visitor we need to clear the session varialbles
+  $_SESSION['MM_Username'] = NULL;
+  $_SESSION['MM_UserGroup'] = NULL;
+  $_SESSION['PrevUrl'] = NULL;
+  unset($_SESSION['MM_Username']);
+  unset($_SESSION['MM_UserGroup']);
+  unset($_SESSION['PrevUrl']);
+	
+  $logoutGoTo = "Index.php";
+  if ($logoutGoTo) {
+    header("Location: $logoutGoTo");
+    exit;
+  }
+}
+?>
 <?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
@@ -31,55 +61,50 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
 }
 }
 
-$editFormAction = $_SERVER['PHP_SELF'];
-if (isset($_SERVER['QUERY_STRING'])) {
-  $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
+if (!function_exists("GetSQLValueString")) {
+function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
+{
+  if (PHP_VERSION < 6) {
+    $theValue = get_magic_quotes_gpc() ? stripslashes($theValue) : $theValue;
+  }
+
+  $theValue = function_exists("mysql_real_escape_string") ? mysql_real_escape_string($theValue) : mysql_escape_string($theValue);
+
+  switch ($theType) {
+    case "text":
+      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+      break;    
+    case "long":
+    case "int":
+      $theValue = ($theValue != "") ? intval($theValue) : "NULL";
+      break;
+    case "double":
+      $theValue = ($theValue != "") ? doubleval($theValue) : "NULL";
+      break;
+    case "date":
+      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+      break;
+    case "defined":
+      $theValue = ($theValue != "") ? $theDefinedValue : $theNotDefinedValue;
+      break;
+  }
+  return $theValue;
+}
 }
 
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO event (Title, Image, `Description`, `Time Remaining`) VALUES (%s, %s, %s, %s)",
-                       GetSQLValueString($_POST['title'], "text"),
-                       GetSQLValueString($_FILES['image'] ['name'], "text"),
-                       GetSQLValueString($_POST['Desc'], "text"),
-                       GetSQLValueString($_POST['Time'], "date"));
+if ((isset($_GET['Title'])) && ($_GET['Title'] != "")) {
+  $deleteSQL = sprintf("DELETE FROM event WHERE Title=%s",
+                       GetSQLValueString($_GET['Title'], "text"));
 
   mysql_select_db($database_Sign_Up, $Sign_Up);
-  $Result1 = mysql_query($insertSQL, $Sign_Up) or die(mysql_error());
+  $Result1 = mysql_query($deleteSQL, $Sign_Up) or die(mysql_error());
 
-  $insertGoTo = "Sukses Create Event.php";
+  $deleteGoTo = "Sukses Delete Event.php";
   if (isset($_SERVER['QUERY_STRING'])) {
-    $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
-    $insertGoTo .= $_SERVER['QUERY_STRING'];
+    $deleteGoTo .= (strpos($deleteGoTo, '?')) ? "&" : "?";
+    $deleteGoTo .= $_SERVER['QUERY_STRING'];
   }
-  header(sprintf("Location: %s", $insertGoTo));
-}
-
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-	// Upload file code goes here
-$target = "upload/"; //This is the directory where file will be uploaded//
- $target = $target . basename( $_FILES['image']['name']); //change the image and name to whatever your database fields are called//
-  $insertSQL = sprintf("INSERT INTO event (Title, Image, `Description`, `Time Remaining`) VALUES (%s, %s, %s, %s)",
-                       GetSQLValueString($_POST['title'], "text"),
-                       GetSQLValueString($_FILES['image']['name'], "text"),
-                       GetSQLValueString($_POST['Desc'], "text"),
-                       GetSQLValueString($_POST['Time'], "date"));
-					   //This code writes the photo to the server//
- if(move_uploaded_file($_FILES['image']['tmp_name'], $target)) 
- {
-
-  mysql_select_db($database_Sign_Up, $Sign_Up);
-  $Result1 = mysql_query($insertSQL, $Sign_Up) or die(mysql_error());
-
-  $insertGoTo = "Sukses Create Event.php";
-  }
-  else{
- header(sprintf("Location: Crate Event.php?file=error"));
- }
-  if (isset($_SERVER['QUERY_STRING'])) {
-    $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
-    $insertGoTo .= $_SERVER['QUERY_STRING'];
-  }
-  header(sprintf("Location: %s", $insertGoTo));
+  header(sprintf("Location: %s", $deleteGoTo));
 }
 
 mysql_select_db($database_Sign_Up, $Sign_Up);
@@ -87,11 +112,6 @@ $query_Event = "SELECT * FROM event";
 $Event = mysql_query($query_Event, $Sign_Up) or die(mysql_error());
 $row_Event = mysql_fetch_assoc($Event);
 $totalRows_Event = mysql_num_rows($Event);
-
-$editFormAction = $_SERVER['PHP_SELF'];
-if (isset($_SERVER['QUERY_STRING'])) {
- $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
-}
 
 mysql_select_db($database_Sign_Up, $Sign_Up);
 $query_Recordset1 = "SELECT * FROM `sign up`";
@@ -122,9 +142,8 @@ function MM_swapImage() { //v3.0
    if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
 }
 </script>
-<script src="SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>
-<link href="SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css">
-<body onLoad="MM_preloadImages('Gambar/Home 1.png','Gambar/Event Gallery 1.png','Gambar/Event 1.png')"><table width="100%" border="0">
+<body onLoad="MM_preloadImages('Gambar/Home 1.png','Gambar/Event Gallery 1.png','Gambar/Event 1.png')">
+<table width="100%" border="0">
   <tr>
     <td align="right">Hi, <?php echo $row_Recordset1['Username']; ?>! <a href="<?php echo $logoutAction ?>"><img src="Gambar/Log Out.png" alt="" width="165" height="32" id="Log Out" /></a></td>
   </tr>
@@ -135,37 +154,26 @@ function MM_swapImage() { //v3.0
     <td align="center"><a href="Homepage Login.php" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Home','','Gambar/Home 1.png',1)"><img src="Gambar/Home.png" alt="v" width="186" height="75" id="Home" /></a><a href="Event Gallery Login.php" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Event Gal','','Gambar/Event Gallery 1.png',1)"><img src="Gambar/Event Gallery.png" alt="v" width="301" height="75" id="Event Gal" /></a><a href="Display.php" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Event','','Gambar/Event 1.png',1)"><img src="Gambar/Event.png" alt="v" width="168" height="75" id="Event" /></a></td>
   </tr>
 </table>
-<form action="<?php echo $editFormAction; ?>" method="POST" enctype="multipart/form-data" name="form1">
-  <p>Title :</p>
-  <p>
-    <label for="title"></label>
-    <input name="title" type="text" id="title" size="50" maxlength="50">
-  </p>
-  <p>Image :  </p>
-  <p>
-    <label for="image"></label>
-    <input type="file" name="image" id="image">
-  </p>
-  <p>Description :</p>
-  <p>
-    <label for="Desc"></label>
-    <textarea name="Desc" id="Desc" cols="50" rows="10"></textarea>
-  </p>
-  <p>Time Remining ;</p>
-  <p>
-    <label for="Time"></label>
-    <span id="sprytextfield1">
-    <input type="text" name="Time" id="Time">
-    <span class="textfieldRequiredMsg">A value is required.</span><span class="textfieldInvalidFormatMsg">Format : yyyy-mm-dd</span></span>	</p>
-  <p>
-    <input type="submit" name="Upload" id="Upload" value="Upload">
-  </p>
-  <input type="hidden" name="MM_insert" value="form1">
-</form>
 <p>&nbsp;</p>
-<script type="text/javascript">
-var sprytextfield1 = new Spry.Widget.ValidationTextField("sprytextfield1", "date", {format:"yyyy-mm-dd", validateOn:["blur", "change"]});
-</script>
+<table width="1183" height="233" border="1" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="268" align="center" valign="middle">Title</td>
+    <td width="128" align="center" valign="middle">Image</td>
+    <td width="413" align="center" valign="middle">Description</td>
+    <td width="124" align="center" valign="middle">Time Remaining</td>
+    <td width="238" align="center" valign="middle">Action</td>
+  </tr>
+  <?php do { ?>
+  <tr>
+    <td align="center" valign="middle"><?php echo $row_Event['Title']; ?></td>
+    <td align="center" valign="middle"><img name="Image" src="<?php echo $row_Event['Image']; ?>" alt=""></td>
+    <td align="center" valign="middle"><?php echo $row_Event['Description']; ?></td>
+    <td align="center" valign="middle"><?php echo $row_Event['Time Remaining']; ?></td>
+    <td align="center" valign="middle"><a href="edit event.php?edit=<?php echo $event['id']; ?>">Edit</a> | <a href="edit event.php?delete=<?php echo $event['id']; ?>">Delete</a></td>
+  </tr>
+  <?php } while ($row_Event = mysql_fetch_assoc($Event)); ?>
+</table>
+<p>&nbsp;</p>
 <?php
 mysql_free_result($Event);
 

@@ -30,13 +30,13 @@ function MM_swapImage() { //v3.0
 <body onLoad="MM_preloadImages('Gambar/Home 1.png','Gambar/Event Gallery 1.png','Gambar/Event 1.png','Gambar/Log Out 1.png')">
 <table width="100%" border="0">
   <tr>
-    <td align="right">Hi, Username! <a href="Index.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Log Out','','Gambar/Log Out 1.png',1)"><img src="Gambar/Log Out.png" alt="" width="165" height="32" id="Log Out" /></a></td>
+    <td align="right">Hi, Username! <a href="Index.php" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Log Out','','Gambar/Log Out 1.png',1)"><img src="Gambar/Log Out.png" alt="" width="165" height="32" id="Log Out" /></a></td>
   </tr>
   <tr>
     <td height="148" align="right"><img src="Gambar/Logo.png" alt="v" width="606" height="69" /></td>
   </tr>
   <tr>
-    <td align="center"><a href="Homepage Login.php" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Home','','Gambar/Home 1.png',1)"><img src="Gambar/Home.png" alt="v" width="186" height="75" id="Home" /></a><a href="Event Gallery Login.php" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Event Gal','','Gambar/Event Gallery 1.png',1)"><img src="Gambar/Event Gallery.png" alt="v" width="301" height="75" id="Event Gal" /></a><a href="Event Login.php" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Event','','Gambar/Event 1.png',1)"><img src="Gambar/Event.png" alt="v" width="168" height="75" id="Event" /></a></td>
+    <td align="center"><a href="Homepage Login.php" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Home','','Gambar/Home 1.png',1)"><img src="Gambar/Home.png" alt="v" width="186" height="75" id="Home" /></a><a href="Event Gallery Login.php" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Event Gal','','Gambar/Event Gallery 1.png',1)"><img src="Gambar/Event Gallery.png" alt="v" width="301" height="75" id="Event Gal" /></a><a href="Display.php" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Event','','Gambar/Event 1.png',1)"><img src="Gambar/Event.png" alt="v" width="168" height="75" id="Event" /></a></td>
   </tr>
 </table>
 <table width="100%" border="0">
