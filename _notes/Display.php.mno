@@ -2,5 +2,5 @@
 <info>
 	<infoitem key="UD_Event" value="name:Title;datatype:string,name:Image;datatype:string,name:Description;datatype:string,name:Time Remaining;datatype:date" />
 	<infoitem key="UD_Recordset1" value="name:First Name;datatype:string,name:Last Name;datatype:string,name:Username;datatype:string,name:Email;datatype:string,name:Password;datatype:string,name:Confirm Password;datatype:string" />
-	<infoitem key="UD_Recordset2" value="name:Title;datatype:string,name:Image;datatype:string,name:Description;datatype:string,name:Time Remaining;datatype:date" />
+	<infoitem key="UD_Recordset2" value="name:Title;datatype:string,name:Comment;datatype:string,name:Email;datatype:string" />
 </info>

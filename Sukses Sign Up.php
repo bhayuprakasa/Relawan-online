@@ -36,6 +36,12 @@ $query_Recordset1 = "SELECT * FROM `sign up`";
 $Recordset1 = mysql_query($query_Recordset1, $Sign_Up) or die(mysql_error());
 $row_Recordset1 = mysql_fetch_assoc($Recordset1);
 $totalRows_Recordset1 = mysql_num_rows($Recordset1);
+
+mysql_select_db($database_Sign_Up, $Sign_Up);
+$query_Recordset2 = "SELECT * FROM `sign up`";
+$Recordset2 = mysql_query($query_Recordset2, $Sign_Up) or die(mysql_error());
+$row_Recordset2 = mysql_fetch_assoc($Recordset2);
+$totalRows_Recordset2 = mysql_num_rows($Recordset2);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -67,16 +73,16 @@ function MM_swapImage() { //v3.0
 </script>
 </head>
 
-<body onload="MM_preloadImages('Gambar/Home 1.png','Gambar/Event Gallery 1.png','Gambar/Event 1.png')">
+<body onload="MM_preloadImages('Gambar/Home 1.png','Gambar/Event Gallery 1.png','Gambar/Event 1.png','Gambar/Login 1.png','Gambar/Sign Up 1.png')">
 <table width="100%" border="0">
   <tr>
-    <td align="right">Hi, <?php echo $row_Recordset1['Username']; ?>! <a href="<?php echo $logoutAction ?>"><img src="Gambar/Log Out.png" alt="" width="165" height="32" id="Log Out3" /></a></td>
+    <td align="right">Welcome!<a href="Login.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Login','','Gambar/Login 1.png',1)"> <img src="Gambar/Login.png" alt="" width="100" height="32" id="Login" /></a><a href="Sign Up.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Sugn Up','','Gambar/Sign Up 1.png',1)"><img src="Gambar/Sign Up.png" alt="" width="116" height="32" id="Sugn Up" /></a></td>
   </tr>
   <tr>
-    <td height="148" align="right"><img src="Gambar/Logo.png" alt="v" width="606" height="69" /></td>
+    <td height="119" align="right"><img src="Gambar/Logo.png" alt="" width="606" height="69" /></td>
   </tr>
   <tr>
-    <td align="center"><a href="Homepage Login.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Home','','Gambar/Home 1.png',1)"><img src="Gambar/Home.png" alt="v" width="186" height="75" id="Home3" /></a><a href="Event Gallery Login.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Event Gal','','Gambar/Event Gallery 1.png',1)"><img src="Gambar/Event Gallery.png" alt="v" width="301" height="75" id="Event Gal3" /></a><a href="Event Login.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Event','','Gambar/Event 1.png',1)"><img src="Gambar/Event.png" alt="v" width="168" height="75" id="Event2" /></a></td>
+    <td align="center"><a href="Index.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Home','','Gambar/Home 1.png',1)"><img src="Gambar/Home.png" alt="c" width="186" height="75" id="Home" /></a><a href="Event Gallery.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Event Gal','','Gambar/Event Gallery 1.png',1)"><img src="Gambar/Event Gallery.png" alt="c" width="301" height="75" id="Event Gal" /></a><a href="Event.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Event','','Gambar/Event 1.png',1)"><img src="Gambar/Event.png" alt="c" width="168" height="75" id="Event" /></a></td>
   </tr>
 </table>
 <table width="100%" border="0">
@@ -89,4 +95,6 @@ function MM_swapImage() { //v3.0
 </html>
 <?php
 mysql_free_result($Recordset1);
+
+mysql_free_result($Recordset2);
 ?>

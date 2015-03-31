@@ -36,34 +36,37 @@ if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
 }
 
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form2")) {
-  $insertSQL = sprintf("INSERT INTO profile (`Full name`, Gender, Age, City, Country, Website) VALUES (%s, %s, %s, %s, %s, %s)",
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+  $updateSQL = sprintf("UPDATE profile SET Profpict=%s, `Full name`=%s, Gender=%s, Age=%s, City=%s, Country=%s, Website=%s WHERE Username=%s",
+                       GetSQLValueString($_POST['Profpict'], "text"),
                        GetSQLValueString($_POST['Full_name'], "text"),
                        GetSQLValueString($_POST['Gender'], "text"),
                        GetSQLValueString($_POST['Age'], "int"),
                        GetSQLValueString($_POST['City'], "text"),
                        GetSQLValueString($_POST['Country'], "text"),
-                       GetSQLValueString($_POST['Website'], "text"));
+                       GetSQLValueString($_POST['Website'], "text"),
+                       GetSQLValueString($_POST['Username'], "text"));
 
   mysql_select_db($database_Sign_Up, $Sign_Up);
-  $Result1 = mysql_query($insertSQL, $Sign_Up) or die(mysql_error());
+  $Result1 = mysql_query($updateSQL, $Sign_Up) or die(mysql_error());
 
-  $insertGoTo = "Sukses Edit Profile.php";
+  $updateGoTo = "Sukses Edit Profile.php";
   if (isset($_SERVER['QUERY_STRING'])) {
-    $insertGoTo .= (strpos($insertGoTo, '?')) ? "&" : "?";
-    $insertGoTo .= $_SERVER['QUERY_STRING'];
+    $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
+    $updateGoTo .= $_SERVER['QUERY_STRING'];
   }
-  header(sprintf("Location: %s", $insertGoTo));
+  header(sprintf("Location: %s", $updateGoTo));
 }
 
-if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form2")) {
-  $updateSQL = sprintf("UPDATE profile SET Gender=%s, Age=%s, City=%s, Country=%s, Website=%s WHERE `Full name`=%s",
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+  $updateSQL = sprintf("UPDATE profile SET Profpict=%s, Gender=%s, Age=%s, City=%s, Country=%s, Website=%s WHERE Username=%s",
+                       GetSQLValueString($_POST['Profpict'], "text"),
                        GetSQLValueString($_POST['Gender'], "text"),
                        GetSQLValueString($_POST['Age'], "int"),
                        GetSQLValueString($_POST['City'], "text"),
                        GetSQLValueString($_POST['Country'], "text"),
                        GetSQLValueString($_POST['Website'], "text"),
-                       GetSQLValueString($_POST['Full_name'], "text"));
+                       GetSQLValueString($_POST['Username'], "text"));
 
   mysql_select_db($database_Sign_Up, $Sign_Up);
   $Result1 = mysql_query($updateSQL, $Sign_Up) or die(mysql_error());
@@ -87,6 +90,12 @@ $query_Recordset1 = "SELECT * FROM `sign up`";
 $Recordset1 = mysql_query($query_Recordset1, $Sign_Up) or die(mysql_error());
 $row_Recordset1 = mysql_fetch_assoc($Recordset1);
 $totalRows_Recordset1 = mysql_num_rows($Recordset1);
+
+mysql_select_db($database_Sign_Up, $Sign_Up);
+$query_Recordset3 = "SELECT * FROM `sign up`";
+$Recordset3 = mysql_query($query_Recordset3, $Sign_Up) or die(mysql_error());
+$row_Recordset3 = mysql_fetch_assoc($Recordset3);
+$totalRows_Recordset3 = mysql_num_rows($Recordset3);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -130,63 +139,70 @@ function MM_swapImage() { //v3.0
     <td align="center"><a href="Homepage Login.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Home','','Gambar/Home 1.png',1)"><img src="Gambar/Home.png" alt="v" width="186" height="75" id="Home" /></a><a href="Event Gallery Login.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Event Gal','','Gambar/Event Gallery 1.png',1)"><img src="Gambar/Event Gallery.png" alt="v" width="301" height="75" id="Event Gal" /></a><a href="Display.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Event','','Gambar/Event 1.png',1)"><img src="Gambar/Event.png" alt="v" width="168" height="75" id="Event" /></a></td>
   </tr>
 </table>
-<table width="100%" border="0">
-  <tr>
-    <th scope="col">&nbsp;</th>
-  </tr>
-  <tr>
-    <td align="center">&nbsp;</td>
-  </tr>
-  <tr>
-    <td align="center">&nbsp;</td>
-  </tr>
-</table>
-<form action="<?php echo $editFormAction; ?>" method="POST" name="form2" id="form2">
+<form method="POST" enctype="multipart/form-data" name="form2" id="form2">
   <table width="100%" border="0">
   <tr>
-    <th scope="col">ABOUT ME</th>
-  </tr>
-  <tr>
-    <td align="center"><?php echo $row_Profile['Profpict']; ?></td>
-  </tr>
-  <tr>
-    <td align="center"><a href="">Change Profile Picture</a></td>
+    <th scope="col"><p>&nbsp;</p>
+      <p>ABOUT ME</p></th>
   </tr>
 </table>
-<p>&nbsp;</p>
-<table align="center">
+</form>
+<form action="<?php echo $editFormAction; ?>" method="POST" enctype="multipart/form-data" name="form1" id="form1">
+  <table align="center">
+    <tr valign="baseline">
+      <td nowrap="nowrap" align="right">Profpict:</td>
+      <td><p>
+        <label for="fileField"></label>
+        <input name="fileField" type="file" id="fileField" value="<?php echo $row_Profile['Profpict']; ?>" />
+      </p>
+      <p>&nbsp; </p></td>
+    </tr>
+    <tr valign="baseline">
+      <td nowrap="nowrap" align="right">Username:</td>
+      <td><?php echo $row_Recordset3['Username']; ?></td>
+    </tr>
     <tr valign="baseline">
       <td nowrap="nowrap" align="right">Full name:</td>
-      <td><input type="text" name="Full_name" size="32" /></td>
+      <td><input type="text" name="Full_name" value="<?php echo htmlentities($row_Profile['Full name'], ENT_COMPAT, 'utf-8'); ?>" size="32" /></td>
     </tr>
     <tr valign="baseline">
       <td nowrap="nowrap" align="right">Gender:</td>
-      <td><input type="text" name="Gender" size="32" /></td>
+      <td><p>
+          <label>
+            <input type="radio" name="Gender" value="Man" id="Gender_0" />
+          Man</label>
+          <br />
+          <label>
+            <input type="radio" name="Gender" value="Woman" id="Gender_1" />
+            Woman</label>
+      </p></td>
     </tr>
     <tr valign="baseline">
       <td nowrap="nowrap" align="right">Age:</td>
-      <td><input type="text" name="Age" size="32" /></td>
+      <td><input type="text" name="Age" value="<?php echo htmlentities($row_Profile['Age'], ENT_COMPAT, 'utf-8'); ?>" size="32" /></td>
     </tr>
     <tr valign="baseline">
       <td nowrap="nowrap" align="right">City:</td>
-      <td><input type="text" name="City" size="32" /></td>
+      <td><input type="text" name="City" value="<?php echo htmlentities($row_Profile['City'], ENT_COMPAT, 'utf-8'); ?>" size="32" /></td>
     </tr>
     <tr valign="baseline">
       <td nowrap="nowrap" align="right">Country:</td>
-      <td><input type="text" name="Country" size="32" /></td>
+      <td><input type="text" name="Country" value="<?php echo htmlentities($row_Profile['Country'], ENT_COMPAT, 'utf-8'); ?>" size="32" /></td>
     </tr>
     <tr valign="baseline">
       <td nowrap="nowrap" align="right">Website:</td>
-      <td><input type="text" name="Website" size="32" /></td>
+      <td><input type="text" name="Website" value="<?php echo htmlentities($row_Profile['Website'], ENT_COMPAT, 'utf-8'); ?>" size="32" /></td>
     </tr>
     <tr valign="baseline">
       <td nowrap="nowrap" align="right">&nbsp;</td>
-      <td><input type="submit" value="Edit Profile" /></td>
+      <td><input type="submit" value="Update record" /></td>
     </tr>
   </table>
-  <input type="hidden" name="MM_insert" value="form2" />
-  <input type="hidden" name="MM_update" value="form2" />
+  <input type="hidden" name="MM_update" value="form1" />
+  <input type="hidden" name="Username" value="<?php echo $row_Profile['Username']; ?>" />
 </form>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
@@ -197,6 +213,8 @@ function MM_swapImage() { //v3.0
 mysql_free_result($Profile);
 
 mysql_free_result($Recordset1);
+
+mysql_free_result($Recordset3);
 ?>
 </body>
 </html>

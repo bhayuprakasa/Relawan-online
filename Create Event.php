@@ -124,6 +124,8 @@ function MM_swapImage() { //v3.0
 </script>
 <script src="SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>
 <link href="SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css">
+<link href="SpryAssets/SpryValidationTextarea.css" rel="stylesheet" type="text/css">
+<script src="SpryAssets/SpryValidationTextarea.js" type="text/javascript"></script>
 <body onLoad="MM_preloadImages('Gambar/Home 1.png','Gambar/Event Gallery 1.png','Gambar/Event 1.png')"><table width="100%" border="0">
   <tr>
     <td align="right">Hi, <?php echo $row_Recordset1['Username']; ?>! <a href="<?php echo $logoutAction ?>"><img src="Gambar/Log Out.png" alt="" width="165" height="32" id="Log Out" /></a></td>
@@ -139,8 +141,9 @@ function MM_swapImage() { //v3.0
   <p>Title :</p>
   <p>
     <label for="title"></label>
+    <span id="sprytextfield2">
     <input name="title" type="text" id="title" size="50" maxlength="50">
-  </p>
+    <span class="textfieldRequiredMsg">A value is required.</span><span class="textfieldMaxCharsMsg">Exceeded maximum number of characters.</span></span></p>
   <p>Image :  </p>
   <p>
     <label for="image"></label>
@@ -149,8 +152,9 @@ function MM_swapImage() { //v3.0
   <p>Description :</p>
   <p>
     <label for="Desc"></label>
+    <span id="sprytextarea1">
     <textarea name="Desc" id="Desc" cols="50" rows="10"></textarea>
-  </p>
+    <span id="countsprytextarea1">&nbsp;</span><span class="textareaRequiredMsg">A value is required.</span><span class="textareaMaxCharsMsg">Exceeded maximum number of characters.</span></span></p>
   <p>Time Remining ;</p>
   <p>
     <label for="Time"></label>
@@ -164,7 +168,9 @@ function MM_swapImage() { //v3.0
 </form>
 <p>&nbsp;</p>
 <script type="text/javascript">
-var sprytextfield1 = new Spry.Widget.ValidationTextField("sprytextfield1", "date", {format:"yyyy-mm-dd", validateOn:["blur", "change"]});
+var sprytextfield1 = new Spry.Widget.ValidationTextField("sprytextfield1", "date", {format:"yyyy-mm-dd", validateOn:["blur", "change"], useCharacterMasking:true, hint:"Format (yyyy-mm-dd)"});
+var sprytextfield2 = new Spry.Widget.ValidationTextField("sprytextfield2", "none", {validateOn:["blur", "change"], maxChars:50, hint:"Use Interactive Sentences!"});
+var sprytextarea1 = new Spry.Widget.ValidationTextarea("sprytextarea1", {counterId:"countsprytextarea1", validateOn:["blur", "change"], maxChars:10000, hint:"Maximum 10.000 Characters"});
 </script>
 <?php
 mysql_free_result($Event);

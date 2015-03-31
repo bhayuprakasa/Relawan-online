@@ -69,6 +69,39 @@ if ((isset($_GET['Title'])) && ($_GET['Title'] != "")) {
   header(sprintf("Location: %s", $deleteGoTo));
 }
 
+if ((isset($_GET['Title'])) && ($_GET['Title'] != "")) {
+  $deleteSQL = sprintf("DELETE FROM event WHERE Title=%s",
+                       GetSQLValueString($_GET['Title'], "text"));
+
+  mysql_select_db($database_Sign_Up, $Sign_Up);
+  $Result1 = mysql_query($deleteSQL, $Sign_Up) or die(mysql_error());
+
+  $deleteGoTo = "Display.php";
+  if (isset($_SERVER['QUERY_STRING'])) {
+    $deleteGoTo .= (strpos($deleteGoTo, '?')) ? "&" : "?";
+    $deleteGoTo .= $_SERVER['QUERY_STRING'];
+  }
+  header(sprintf("Location: %s", $deleteGoTo));
+}
+
+if ((isset($_POST["MM_update"])) && ($_POST["MM_update"] == "form1")) {
+  $updateSQL = sprintf("UPDATE event SET Image=%s, `Description`=%s, `Time Remaining`=%s WHERE Title=%s",
+                       GetSQLValueString($_POST['image'], "text"),
+                       GetSQLValueString($_POST['Desc'], "text"),
+                       GetSQLValueString($_POST['Time'], "date"),
+                       GetSQLValueString($_POST['title'], "text"));
+
+  mysql_select_db($database_Sign_Up, $Sign_Up);
+  $Result1 = mysql_query($updateSQL, $Sign_Up) or die(mysql_error());
+
+  $updateGoTo = "Display.php";
+  if (isset($_SERVER['QUERY_STRING'])) {
+    $updateGoTo .= (strpos($updateGoTo, '?')) ? "&" : "?";
+    $updateGoTo .= $_SERVER['QUERY_STRING'];
+  }
+  header(sprintf("Location: %s", $updateGoTo));
+}
+
 mysql_select_db($database_Sign_Up, $Sign_Up);
 $query_Recordset1 = "SELECT * FROM event";
 $Recordset1 = mysql_query($query_Recordset1, $Sign_Up) or die(mysql_error());

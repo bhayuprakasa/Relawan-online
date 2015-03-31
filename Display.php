@@ -118,6 +118,12 @@ $query_Recordset1 = "SELECT * FROM `sign up`";
 $Recordset1 = mysql_query($query_Recordset1, $Sign_Up) or die(mysql_error());
 $row_Recordset1 = mysql_fetch_assoc($Recordset1);
 $totalRows_Recordset1 = mysql_num_rows($Recordset1);
+
+mysql_select_db($database_Sign_Up, $Sign_Up);
+$query_Recordset2 = "SELECT * FROM `comment`";
+$Recordset2 = mysql_query($query_Recordset2, $Sign_Up) or die(mysql_error());
+$row_Recordset2 = mysql_fetch_assoc($Recordset2);
+$totalRows_Recordset2 = mysql_num_rows($Recordset2);
 ?>
 <script type="text/javascript">
 function MM_swapImgRestore() { //v3.0
@@ -155,13 +161,13 @@ function MM_swapImage() { //v3.0
   </tr>
 </table>
 <p>&nbsp;</p>
-<table width="1183" height="233" border="1" cellpadding="0" cellspacing="0">
+<table width="1187" height="233" border="1" cellpadding="0" cellspacing="0">
   <tr>
-    <td width="268" align="center" valign="middle">Title</td>
-    <td width="128" align="center" valign="middle">Image</td>
-    <td width="413" align="center" valign="middle">Description</td>
-    <td width="124" align="center" valign="middle">Time Remaining</td>
-    <td width="238" align="center" valign="middle">Action</td>
+    <td width="160" align="center" valign="middle">Title</td>
+    <td width="131" align="center" valign="middle">Image</td>
+    <td width="406" align="center" valign="middle">Description</td>
+    <td width="173" align="center" valign="middle">Time Remaining</td>
+    <td width="234" align="center" valign="middle">Action</td>
   </tr>
   <?php do { ?>
   <tr>
@@ -170,12 +176,36 @@ function MM_swapImage() { //v3.0
     <td align="center" valign="middle"><?php echo $row_Event['Description']; ?></td>
     <td align="center" valign="middle"><?php echo $row_Event['Time Remaining']; ?></td>
     <td align="center" valign="middle"><a href="edit event.php?edit=<?php echo $event['id']; ?>">Edit</a> | <a href="edit event.php?delete=<?php echo $event['id']; ?>">Delete</a></td>
-  </tr>
+    </tr>
   <?php } while ($row_Event = mysql_fetch_assoc($Event)); ?>
 </table>
+<table width="1187" border="1">
+  <?php do { ?>
+    <tr>
+      <td width="194" height="70" scope="row"><p>Title : </p>
+        <p><?php echo $row_Recordset2['Title']; ?></p></td>
+      <td width="317" scope="row"><p>Email :</p>
+        <p><?php echo $row_Recordset2['Email']; ?></p></td>
+      <td width="654" scope="row">Komen : 
+        <form name="form1" method="post" action="">
+          <label for="textarea"></label>
+          <textarea name="textarea" id="textarea" cols="45" rows="5"><?php echo $row_Recordset2['Comment']; ?></textarea>
+        </form></td>
+    </tr>
+    <?php } while ($row_Recordset2 = mysql_fetch_assoc($Recordset2)); ?>
+</table>
+<p>&nbsp;</p>
+<table width="200" border="0" align="left">
+  <tr>
+    <th scope="row"><a href="Comment.php">Insert Comments</a></th>
+  </tr>
+</table>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <?php
 mysql_free_result($Event);
 
 mysql_free_result($Recordset1);
+
+mysql_free_result($Recordset2);
 ?>

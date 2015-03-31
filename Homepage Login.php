@@ -164,14 +164,16 @@ function MM_swapImage() { //v3.0
     <td align="center"><a href="Homepage Login.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Home','','Gambar/Home 1.png',1)"><img src="Gambar/Home.png" alt="v" width="186" height="75" id="Home" /></a><a href="Event Gallery Login.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Event Gal','','Gambar/Event Gallery 1.png',1)"><img src="Gambar/Event Gallery.png" alt="v" width="301" height="75" id="Event Gal" /></a><a href="Event Login.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Event','','Gambar/Event 1.png',1)"><img src="Gambar/Event.png" alt="v" width="168" height="75" id="Event" /></a></td>
   </tr>
 </table>
-<table width="132%" border="0">
+<table width="100%" border="0">
   <tr>
     <th width="61%" height="82" scope="col">Event Terbaru</th>
     <th width="39%" align="left" scope="col"><p>About Me</p>
-    <p><?php echo $row_Profile['Profpict']; ?></p></th>
+      <form id="form1" name="form1" method="post" action="">
+        <?php echo $row_Profile['Profpict']; ?>
+      </form></th>
   </tr>
 </table>
-<table width="131%" border="0">
+<table width="100%" border="0">
   <tr>
     <th width="31%" height="75" scope="col">Lingkungan</th>
     <th width="30%" scope="col">Pendidikan</th>
@@ -189,8 +191,8 @@ function MM_swapImage() { //v3.0
 <table width="131%" border="0">
   <tr>
     <td width="31%" align="center" scope="col"><?php echo $row_Event['Description']; ?></td>
-    <td width="30%" align="center" scope="col"><?php echo $row_Event['Description']; ?></td>
-    <td width="39%" align="left" scope="col"><a href="Edit Profile.php"><img src="Gambar/Edit Profile.png" width="103" height="25" /></a></td>
+    <td width="17%" align="center" scope="col"><?php echo $row_Event['Description']; ?></td>
+    <td width="52%" align="left" scope="col"><a href="Edit Profile.php"><img src="Gambar/Edit Profile.png" width="103" height="25" /></a></td>
   </tr>
 </table>
 <p>&nbsp;</p>

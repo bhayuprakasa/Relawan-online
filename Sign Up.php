@@ -67,6 +67,7 @@ $totalRows_Recordset1 = mysql_num_rows($Recordset1);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Untitled Document</title>
+<script src="SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>
 <script type="text/javascript">
 function MM_swapImgRestore() { //v3.0
   var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
@@ -90,6 +91,7 @@ function MM_swapImage() { //v3.0
    if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
 }
 </script>
+<link href="SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body onload="MM_preloadImages('Gambar/Home 1.png','Gambar/Event Gallery 1.png','Gambar/Event 1.png')">
@@ -114,19 +116,27 @@ function MM_swapImage() { //v3.0
     </tr>
     <tr valign="baseline">
       <td nowrap="nowrap" align="right"><b>Username:</b></td>
-      <td><input type="text" name="Username" value="" size="32" /></td>
+      <td><span id="sprytextfield1">
+      <input type="text" name="Username" value="" size="32" />
+      <span class="textfieldRequiredMsg">A value is required.</span><span class="textfieldMinCharsMsg">Minimum number of characters not met.</span><span class="textfieldMaxCharsMsg">Exceeded maximum number of characters.</span></span></td>
     </tr>
     <tr valign="baseline">
       <td nowrap="nowrap" align="right"><b>Email:</b></td>
-      <td><input type="text" name="Email" value="" size="32" /></td>
+      <td><span id="sprytextfield2">
+      <input type="text" name="Email" value="" size="32" />
+      <span class="textfieldRequiredMsg">A value is required.</span><span class="textfieldInvalidFormatMsg">Invalid format.</span><span class="textfieldMinCharsMsg">Minimum number of characters not met.</span><span class="textfieldMaxCharsMsg">Exceeded maximum number of characters.</span></span></td>
     </tr>
     <tr valign="baseline">
       <td nowrap="nowrap" align="right"><b>Password:</b></td>
-      <td><input type="password" name="Password" value="" size="32" /></td>
+      <td><span id="sprytextfield3">
+      <input type="password" name="Password" value="" size="32" />
+      <span class="textfieldRequiredMsg">A value is required.</span><span class="textfieldMinCharsMsg">Minimum number of characters not met.</span><span class="textfieldMaxCharsMsg">Exceeded maximum number of characters.</span></span></td>
     </tr>
     <tr valign="baseline">
       <td nowrap="nowrap" align="right"><b>Confirm Password:</b></td>
-      <td><input type="password" name="Confirm_Password" value="" size="32" /></td>
+      <td><span id="sprytextfield4">
+      <input type="password" name="Confirm_Password" value="" size="32" />
+      <span class="textfieldRequiredMsg">A value is required.</span><span class="textfieldMinCharsMsg">Minimum number of characters not met.</span></span></td>
     </tr>
     <tr valign="baseline">
       <td nowrap="nowrap" align="right">&nbsp;</td>
@@ -137,6 +147,12 @@ function MM_swapImage() { //v3.0
   <input type="hidden" name="MM_insert" value="form1" />
 </form>
 <p>&nbsp;</p>
+<script type="text/javascript">
+var sprytextfield1 = new Spry.Widget.ValidationTextField("sprytextfield1", "none", {minChars:1, validateOn:["blur", "change"], maxChars:30});
+var sprytextfield2 = new Spry.Widget.ValidationTextField("sprytextfield2", "email", {minChars:1, maxChars:50, validateOn:["blur", "change"], useCharacterMasking:true});
+var sprytextfield3 = new Spry.Widget.ValidationTextField("sprytextfield3", "none", {validateOn:["blur", "change"], minChars:6, maxChars:30});
+var sprytextfield4 = new Spry.Widget.ValidationTextField("sprytextfield4", "none", {validateOn:["blur", "change"], minChars:6});
+</script>
 </body>
 </html>
 <?php

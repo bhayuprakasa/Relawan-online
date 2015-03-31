@@ -105,6 +105,8 @@ function MM_swapImage() { //v3.0
 </head>
 
 <body onload="MM_preloadImages('Gambar/Home 1.png','Gambar/Event Gallery 1.png','Gambar/Event 1.png')">
+<form id="form1" name="form1" method="post" action="">
+</form>
 <table width="100%" border="0">
   <tr>
     <td height="148" align="right"><img src="Gambar/Logo.png" alt="" width="606" height="69" /></td>
