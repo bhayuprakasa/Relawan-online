@@ -157,7 +157,7 @@ function MM_swapImage() { //v3.0
     <td height="148" align="right"><img src="Gambar/Logo.png" alt="v" width="606" height="69" /></td>
   </tr>
   <tr>
-    <td align="center"><a href="Homepage Login.php" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Home','','Gambar/Home 1.png',1)"><img src="Gambar/Home.png" alt="v" width="186" height="75" id="Home" /></a><a href="Event Gallery Login.php" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Event Gal','','Gambar/Event Gallery 1.png',1)"><img src="Gambar/Event Gallery.png" alt="v" width="301" height="75" id="Event Gal" /></a><a href="Display.php" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Event','','Gambar/Event 1.png',1)"><img src="Gambar/Event.png" alt="v" width="168" height="75" id="Event" /></a></td>
+    <td align="center"><a href="Index.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Home','','Gambar/Home 1.png',1)"><img src="Gambar/Home.png" alt="c" width="186" height="75" id="Home" /></a><a href="Event Gallery.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Event Gal','','Gambar/Event Gallery 1.png',1)"><img src="Gambar/Event Gallery.png" alt="c" width="301" height="75" id="Event Gal" /></a><a href="Event.php" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Event','','Gambar/Event 1.png',1)"><img src="Gambar/Event.png" alt="c" width="168" height="75" id="Event" /></a></td>
   </tr>
 </table>
 <p>&nbsp;</p>
